@@ -1,0 +1,7 @@
+# vim: ft=bash:
+. ${ROOT_DIR}/${KERNEL_DIR}/build.config.common
+. ${ROOT_DIR}/${KERNEL_DIR}/build.config.aarch64
+
+SKIP_MRPROPER=1
+DEFCONFIG=rmx3834_defconfig
+POST_DEFCONFIG_CMDS="check_defconfig"
