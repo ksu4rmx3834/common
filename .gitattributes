@@ -1,2 +1,3 @@
 *.c   diff=cpp
 *.h   diff=cpp
+* text=auto eol=lf
