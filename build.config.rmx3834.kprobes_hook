@@ -1,0 +1,12 @@
+# vim: ft=bash:
+. ${ROOT_DIR}/${KERNEL_DIR}/build.config.rmx3834
+
+POST_DEFCONFIG_CMDS="${POST_DEFCONFIG_CMDS} && disable_manual_hook"
+
+function disable_manual_hook() {
+	${KERNEL_DIR}/scripts/config --file ${OUT_DIR}/.config \
+		-d CONFIG_KSU_MANUAL_HOOK
+
+	(cd ${OUT_DIR} &&
+		make O=${OUT_DIR} $archsubarch CROSS_COMPILE=${CROSS_COMPILE} "${TOOL_ARGS[@]}" ${MAKE_ARGS} olddefconfig)
+}
