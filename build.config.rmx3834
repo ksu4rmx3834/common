@@ -4,8 +4,24 @@
 
 SKIP_MRPROPER=1
 DEFCONFIG=rmx3834_defconfig
-POST_DEFCONFIG_CMDS="check_defconfig"
+POST_DEFCONFIG_CMDS="check_defconfig && update_config"
 DIST_CMDS="generate_bootimg && generate_anykernel"
+
+function update_config() {
+	${KERNEL_DIR}/scripts/config --file ${OUT_DIR}/.config \
+		-d CONFIG_MODULE_SIG \
+		-d CONFIG_MODULE_SIG_ALL \
+		-d CONFIG_MODULE_SIG_FORCE \
+		-e CONFIG_TMPFS_XATTR \
+		-e CONFIG_TMPFS_POSIX_ACL \
+		-e CONFIG_USER_NS \
+		-e CONFIG_PID_NS \
+		-m CONFIG_NETFILTER_XT_MATCH_CONNBYTES \
+		-m CONFIG_NETFILTER_XT_MATCH_MULTIPORT
+
+	(cd ${OUT_DIR} &&
+		make O=${OUT_DIR} $archsubarch CROSS_COMPILE=${CROSS_COMPILE} "${TOOL_ARGS[@]}" ${MAKE_ARGS} olddefconfig)
+}
 
 function generate_bootimg() {
 	make -C "${ROOT_DIR}/mkbootimg" clean all
