@@ -5,3 +5,12 @@
 SKIP_MRPROPER=1
 DEFCONFIG=rmx3834_defconfig
 POST_DEFCONFIG_CMDS="check_defconfig"
+DIST_CMDS="generate_bootimg && generate_anykernel"
+
+function generate_bootimg() {
+	make -C "${ROOT_DIR}/mkbootimg" clean all
+}
+
+function generate_anykernel() {
+	make -C "${ROOT_DIR}/mkanykernel" clean all
+}
